@@ -60,7 +60,11 @@ class _MemoramaState extends State<Memorama> {
         paresFound++;
         selected.clear();
 
-        if (paresFound == 10) {}
+        if (paresFound == 10) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            dialogoVictoria();
+          });
+        }
       } else {
         Future.delayed(const Duration(seconds: 1), () {
           setState(() {
@@ -70,6 +74,52 @@ class _MemoramaState extends State<Memorama> {
         });
       }
     }
+  }
+
+  void dialogoVictoria() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Has encontrado los 10 pares."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _reiniciarJuego();
+            },
+            child: Text("Jugar de nuevo"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _reiniciarJuego() {
+    setState(() {
+      paresFound = 0;
+      selected.clear();
+
+      final List<Color> baseColors = [];
+      while (baseColors.length < 10) {
+        final nuevoColor = randomColor();
+        if (!baseColors.contains(nuevoColor)) {
+          baseColors.add(nuevoColor);
+        }
+      }
+
+      tiles =
+          List<ColorTile>.from(
+            baseColors.map(
+              (c) => ColorTile(colorStart: Colors.grey, colorEnd: c),
+            ),
+          )..addAll(
+            baseColors.map(
+              (c) => ColorTile(colorStart: Colors.grey, colorEnd: c),
+            ),
+          );
+
+      tiles.shuffle(Random());
+    });
   }
 
   @override
