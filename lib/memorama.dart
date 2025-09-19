@@ -125,7 +125,17 @@ class _MemoramaState extends State<Memorama> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Memorama     Hiram Rodriguez Vera")),
+      appBar: AppBar(
+        title: Text("Memorama     Hiram Rodriguez Vera"),
+        leadingWidth: 120,
+        leading: FilledButton(
+          onPressed: () => _reiniciarJuego(),
+          style: ButtonStyle(
+            minimumSize: MaterialStateProperty.all(const Size(200, 60)),
+          ),
+          child: const Text("Reiniciar"),
+        ),
+      ),
       body: GridView(
         padding: const EdgeInsets.all(16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
